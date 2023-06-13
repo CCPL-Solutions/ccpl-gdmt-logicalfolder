@@ -1,5 +1,6 @@
 package com.colegiominayticha.ccplgdmtlogicalfolder.service;
 
+import com.colegiominayticha.ccplgdmtlogicalfolder.DummyMock;
 import com.colegiominayticha.ccplgdmtlogicalfolder.model.RestConsumerRequestDto;
 import com.colegiominayticha.ccplgdmtlogicalfolder.model.consumer.LogicalFolderRequestDto;
 import com.colegiominayticha.ccplgdmtlogicalfolder.model.consumer.LogicalFolderResponseDto;
@@ -10,8 +11,6 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
-import static com.colegiominayticha.ccplgdmtlogicalfolder.DummyMock.getLogicalFolderRequestDto;
-import static com.colegiominayticha.ccplgdmtlogicalfolder.DummyMock.getRequestHeaders;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 
 @ExtendWith(MockitoExtension.class)
@@ -27,8 +26,8 @@ class LogicalFolderServiceImplTest {
     void setUp() {
         restConsumerRequest = RestConsumerRequestDto
                 .<LogicalFolderRequestDto>builder()
-                .headers(getRequestHeaders())
-                .body(getLogicalFolderRequestDto())
+                .headers(DummyMock.getRequestHeaders())
+                .body(DummyMock.getLogicalFolderRequestDto())
                 .build();
     }
 
