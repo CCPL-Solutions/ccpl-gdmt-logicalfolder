@@ -1,6 +1,5 @@
 package com.colegiominayticha.ccplgdmtlogicalfolder.consumer;
 
-import com.colegiominayticha.ccplgdmtlogicalfolder.DummyMock;
 import com.colegiominayticha.ccplgdmtlogicalfolder.model.consumer.LogicalFolderRequestDto;
 import com.colegiominayticha.ccplgdmtlogicalfolder.service.ILogicalFolderService;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -13,6 +12,8 @@ import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
 
+import static com.colegiominayticha.ccplgdmtlogicalfolder.DummyMock.getLogicalFolderRequestDto;
+import static com.colegiominayticha.ccplgdmtlogicalfolder.DummyMock.getLogicalFolderResponseDto;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
@@ -34,10 +35,10 @@ class LogicalFolderControllerTest {
     @WithMockUser(roles = "clients:orders:read")
     void createLogicalFolderTest() throws Exception {
         // Given
-        LogicalFolderRequestDto request = DummyMock.getLogicalFolderRequestDto();
+        LogicalFolderRequestDto request = getLogicalFolderRequestDto();
 
         // When
-        when(service.createLogicalFolder(any())).thenReturn(DummyMock.getLogicalFolderResponseDto());
+        when(service.createLogicalFolder(any())).thenReturn(getLogicalFolderResponseDto());
         mockMvc.perform(post("/api/v1/logical-folders")
                         .header("x-user-id", "pedro.chavez")
                         .contentType(MediaType.APPLICATION_JSON)
