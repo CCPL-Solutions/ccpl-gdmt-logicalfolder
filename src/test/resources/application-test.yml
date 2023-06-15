@@ -1,0 +1,6 @@
+security:
+  oauth2:
+    resourceserver:
+      enable: true
+      uri: http://localhost:8080/realms/develop/protocol/openid-connect/
+      jwkSetUri: certs

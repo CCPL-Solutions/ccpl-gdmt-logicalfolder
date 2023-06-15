@@ -23,6 +23,7 @@
 		<sonar.projectKey>ccpl-gdmt-logicalfolder</sonar.projectKey>
 		<sonar.exclusions>
 			**/*Application.*,
+			**/*Api*.*,
 			**/entity/*,
 			**/entity/**/*,
 			**/constant/*,
@@ -38,6 +39,7 @@
 		</sonar.exclusions>
 		<sonar.coverage.exclusions>
 			**/*Application.*,
+			**/*Api*.*,
 			**/entity/*,
 			**/entity/**/*,
 			**/constant/*,
@@ -115,7 +117,7 @@
 		<dependency>
 			<groupId>com.ccplsolutions</groupId>
 			<artifactId>ccpl-starter-security-oauth2-resource-server</artifactId>
-			<version>1.0.5</version>
+			<version>1.0.1</version>
 		</dependency>
 	</dependencies>
 	<dependencyManagement>
@@ -151,6 +153,7 @@
 				<configuration>
 					<excludes>
 						<exclude>**/*Application.*</exclude>
+						<exclude>**/*Api*.*</exclude>
 						<exclude>**/entity/*</exclude>
 						<exclude>**/entity/**/*</exclude>
 						<exclude>**/constant/*</exclude>

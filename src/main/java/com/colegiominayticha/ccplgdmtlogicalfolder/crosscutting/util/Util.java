@@ -6,8 +6,13 @@ import java.util.HashMap;
 import java.util.Map;
 
 public class Util {
+
+    private Util() {
+        super();
+    }
+
     public static Map<String, Object> getHeaders(String xUserId) {
-        Map<String, Object> headers =  new HashMap<>();
+        Map<String, Object> headers = new HashMap<>();
         headers.put(HeaderConstant.X_USER_ID, xUserId);
         return headers;
     }

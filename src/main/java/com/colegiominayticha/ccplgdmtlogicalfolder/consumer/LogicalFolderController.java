@@ -21,7 +21,7 @@ public class LogicalFolderController implements LogicalFoldersApi {
     private ILogicalFolderService service;
 
     @Override
-    @PreAuthorize("hasRole('clients:orders:read')")
+    @PreAuthorize("hasRole('gdmt:logicalfolders:logicalfolders:write')")
     public ResponseEntity<LogicalFolderResponseDto> createLogicalFolder(String xUserId, LogicalFolderRequestDto
             logicalFolderRequestDto) {
 
