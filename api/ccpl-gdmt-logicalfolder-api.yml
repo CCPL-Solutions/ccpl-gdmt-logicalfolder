@@ -1,0 +1,575 @@
+openapi: 3.0.0
+info:
+  title: Microservicio de Carpetas Lógicas
+  version: 1.0.0
+  description: >-
+    API para la gestión de carpetas lógicas en un sistema de gestión documental
+    basado en microservicios.
+  contact:
+    email: pedro.chavezcastro@outlook.com
+servers:
+  - url: 'http://localhost:8086/api/v1'
+tags:
+  - name: Logical Folders
+    description: Operations about logical folder
+paths:
+  /logical-folders:
+    post:
+      tags:
+        - Logical Folders
+      summary: Crear una carpeta
+      description: Esta operación permite realizar la creación de una carpeta logica
+      operationId: createLogicalFolder
+      parameters:
+        - $ref: '#/components/parameters/UserParameter'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/LogicalFolderRequestDto'
+      responses:
+        '201':
+          description: Carpeta creada con éxito
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/LogicalFolderResponseDto'
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+        '500':
+          $ref: '#/components/responses/InternalServerError'
+        default:
+          $ref: '#/components/responses/UnexpectedError'
+    get:
+      tags:
+        - Logical Folders
+      summary: Obtener todas las carpetas
+      description: >-
+        Esta operación permite realizar la consulta de carpetas logicas en el
+        sistema
+      operationId: findAllLogicalFolder
+      parameters:
+        - $ref: '#/components/parameters/UserParameter'
+        - name: filterName
+          in: query
+          description: Nombre del campo por medio del cual se va a filtrar
+          required: false
+          schema:
+            type: string
+        - name: filterValue
+          in: query
+          description: Valor del campo por medio del cual se va a filtrar
+          required: false
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Lista de carpetas
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/LogicalFolderListResponseDto'
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+        '500':
+          $ref: '#/components/responses/InternalServerError'
+        default:
+          $ref: '#/components/responses/UnexpectedError'
+  '/logical-folders/{logical-folder-id}':
+    get:
+      tags:
+        - Logical Folders
+      summary: Obtener información de una carpeta
+      description: >-
+        Esta operación permite realizar la consulta del detalle de una carpeta
+        logica.
+      operationId: findLogicalFolderById
+      parameters:
+        - $ref: '#/components/parameters/UserParameter'
+        - $ref: '#/components/parameters/FolderIdParameter'
+      responses:
+        '200':
+          description: Información de la carpeta
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/LogicalFolderResponseDto'
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+        '500':
+          $ref: '#/components/responses/InternalServerError'
+        default:
+          $ref: '#/components/responses/UnexpectedError'
+    put:
+      tags:
+        - Logical Folders
+      summary: Actualizar los datos de una carpeta
+      description: >-
+        Esta operación permite actualizar los datos basicos de una carpeta
+        logica
+      operationId: updateLogicalFolder
+      parameters:
+        - $ref: '#/components/parameters/UserParameter'
+        - name: logical-folder-id
+          in: path
+          description: ID de la carpeta a actualizar
+          required: true
+          schema:
+            type: string
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/FolderUpdateRequestDto'
+      responses:
+        '200':
+          description: Carpeta actualizada con éxito
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+        '500':
+          $ref: '#/components/responses/InternalServerError'
+        default:
+          $ref: '#/components/responses/UnexpectedError'
+    delete:
+      tags:
+        - Logical Folders
+      summary: Eliminar una carpeta
+      description: >-
+        Esta operación permite eliminar una carpeta logica del sistema, siempre
+        y cuando no tenga elementos internos.
+      operationId: deleteLogicalFolder
+      parameters:
+        - $ref: '#/components/parameters/UserParameter'
+        - name: logical-folder-id
+          in: path
+          description: ID de la carpeta a eliminar
+          required: true
+          schema:
+            type: string
+      responses:
+        '204':
+          description: Carpeta eliminada con éxito
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+        '500':
+          $ref: '#/components/responses/InternalServerError'
+        default:
+          $ref: '#/components/responses/UnexpectedError'
+  '/logical-folders/{logical-folder-id}/metadata':
+    post:
+      tags:
+        - Logical Folders
+      summary: Agregar un metadato específico a una carpeta
+      description: >-
+        Esta operación permite agregar un metadato especifico a una carpeta
+        logica.
+      operationId: addingSpecificMetadataToFolder
+      parameters:
+        - $ref: '#/components/parameters/UserParameter'
+        - $ref: '#/components/parameters/FolderIdParameter'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/SpecificMetadataDto'
+      responses:
+        '200':
+          description: Metadato agregado o modificado con éxito
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+        '500':
+          $ref: '#/components/responses/InternalServerError'
+        default:
+          $ref: '#/components/responses/UnexpectedError'
+  '/logical-folders/{logical-folder-id}/metadata/{metadata-id}':
+    delete:
+      tags:
+        - Logical Folders
+      summary: Eliminar un metadato específico de una carpeta
+      description: >-
+        Esta operación permite eliminar un metadato especifico asociado a una
+        carpeta logica.
+      operationId: deletSpecificMetadata
+      parameters:
+        - $ref: '#/components/parameters/UserParameter'
+        - $ref: '#/components/parameters/FolderIdParameter'
+        - $ref: '#/components/parameters/MetadataIdParameter'
+      responses:
+        '204':
+          description: Metadato eliminado con éxito
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+        '500':
+          $ref: '#/components/responses/InternalServerError'
+        default:
+          $ref: '#/components/responses/UnexpectedError'
+  '/logical-folders/{logical-folder-id}/move':
+    put:
+      tags:
+        - Logical Folders
+      summary: Mover una carpeta a otra ubicación
+      description: Esta operación permite mover una carpeta logica a otra ubicación.
+      operationId: moveLogicalFolder
+      parameters:
+        - $ref: '#/components/parameters/UserParameter'
+        - $ref: '#/components/parameters/FolderIdParameter'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/FolderMoveRequestDto'
+      responses:
+        '200':
+          description: Carpeta movida con éxito
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+        '500':
+          $ref: '#/components/responses/InternalServerError'
+        default:
+          $ref: '#/components/responses/UnexpectedError'
+  '/logical-folders/{logical-folder-id}/children':
+    post:
+      tags:
+        - Logical Folders
+      summary: Agregar un elemento hijo a una carpeta
+      description: >-
+        Esta operación permite agregar un elemento a una carpeta logica (carpeta
+        logica o documento)
+      operationId: addChildrenToLogicalFolder
+      parameters:
+        - $ref: '#/components/parameters/UserParameter'
+        - $ref: '#/components/parameters/FolderIdParameter'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ChildrenCreateRequestDto'
+      responses:
+        '200':
+          description: Elemento hijo agregado con éxito
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+        '500':
+          $ref: '#/components/responses/InternalServerError'
+        default:
+          $ref: '#/components/responses/UnexpectedError'
+    get:
+      tags:
+        - Logical Folders
+      summary: Obtener elementos hijos de una carpeta
+      description: >-
+        Esta operación permite realizar la consulta de los elementos hiijos de
+        una carpeta
+      operationId: findAllFolderChildren
+      parameters:
+        - $ref: '#/components/parameters/UserParameter'
+        - $ref: '#/components/parameters/FolderIdParameter'
+      responses:
+        '200':
+          description: Información de la carpeta
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/ChildrenLogicalFolderDto'
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+        '500':
+          $ref: '#/components/responses/InternalServerError'
+        default:
+          $ref: '#/components/responses/UnexpectedError'
+  '/logical-folders/{logical-folder-id}/children/{children-id}':
+    delete:
+      tags:
+        - Logical Folders
+      summary: Eliminar un elemento hijo de una carpeta
+      description: Esta operación permite remover un elemento de una carpeta logica.
+      operationId: deleteChildrenFromLogicalFolder
+      parameters:
+        - $ref: '#/components/parameters/UserParameter'
+        - $ref: '#/components/parameters/FolderIdParameter'
+        - $ref: '#/components/parameters/ChildenIdParameter'
+      responses:
+        '204':
+          description: Elemento hijo eliminado con éxito
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+        '500':
+          $ref: '#/components/responses/InternalServerError'
+        default:
+          $ref: '#/components/responses/UnexpectedError'
+components:
+  schemas:
+    ChildrenCreateRequestDto:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+          description: Identificador del elemento
+        node_type:
+          type: string
+          description: Tipo de nodo hijo (carpeta o documento)
+    ChildrenLogicalFolderDto:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+          description: Identificador del elemento
+        name:
+          type: string
+          description: Nombre del elemento hijo
+        node_type:
+          type: string
+          description: Tipo de nodo hijo (carpeta o documento)
+        created_user:
+          type: string
+          description: Usuario que realizo la creación del elemento
+        created_at:
+          type: string
+          format: date-time
+          description: Fecha y hora de creación del elemento
+    ErrorDto:
+      type: object
+      additionalProperties: false
+      description: >-
+        Este objeto contiene infromación relacionada con errores presentados en
+        el microservicio.
+      properties:
+        code:
+          type: string
+        message:
+          type: string
+        time_stamp:
+          type: string
+        metadata:
+          type: array
+          items:
+            type: string
+    FolderMoveRequestDto:
+      type: object
+      properties:
+        destination_folder_id:
+          type: string
+          format: uuid
+          description: ID de la carpeta de destino
+    FolderUpdateRequestDto:
+      type: object
+      properties:
+        name:
+          type: string
+          description: Nuevo nombre de la carpeta
+        description:
+          type: string
+          maxLength: 100
+          description: Comentarios adicionales que un cliente puede agregar a la carpeta
+    LogicalFolderListResponseDto:
+      type: object
+      properties:
+        name:
+          type: string
+          description: Nombre de la carpeta
+        created_user:
+          type: string
+          description: Usuario que realizo la creación de la carpeta
+        created_at:
+          type: string
+          format: date-time
+          description: Fecha y hora de creación de la carpeta
+    LogicalFolderResponseDto:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+          description: ID de la carpeta
+        parent_id:
+          type: string
+          format: uuid
+          description: ID de la carpeta padre
+        folder_information:
+          $ref: '#/components/schemas/LogicalFolderInformation'
+        specific_metadata:
+          type: array
+          items:
+            $ref: '#/components/schemas/SpecificMetadataDto'
+    LogicalFolderInformation:
+      type: object
+      properties:
+        name:
+          type: string
+          description: Nombre de la carpeta
+        description:
+          type: string
+          maxLength: 100
+          description: >-
+            Comentarios adicionales que un cliente puede agregar a la
+            carpeta
+        created_user:
+          type: string
+          description: Usuario que realizo la creación de la carpeta
+        created_at:
+          type: string
+          format: date-time
+          description: Fecha y hora de creación de la carpeta
+        updated_at:
+          type: string
+          format: date-time
+          description: Fecha y hora de la última actualización de la carpeta
+
+    LogicalFolderRequestDto:
+      type: object
+      properties:
+        name:
+          type: string
+          maxLength: 50
+          description: Nombre de la carpeta
+        description:
+          type: string
+          maxLength: 100
+          description: Comentarios adicionales que un cliente puede agregar a la carpeta
+        parent_id:
+          type: string
+          format: uuid
+          description: ID de la carpeta padre
+        specific_metadata:
+          type: array
+          minItems: 0
+          maxItems: 3
+          items:
+            $ref: '#/components/schemas/SpecificMetadataDto'
+    SpecificMetadataDto:
+      type: object
+      properties:
+        id:
+          type: integer
+          format: int64
+          description: Identificador del metadato
+          readOnly: true
+        name:
+          type: string
+          maxLength: 50
+          description: Nombre del metadato
+        value:
+          type: string
+          maxLength: 50
+          description: Valor del metadato
+  parameters:
+    ChildenIdParameter:
+      name: children-id
+      in: path
+      description: ID del elemento hijo de una carpeta
+      required: true
+      schema:
+        type: string
+    FolderIdParameter:
+      name: logical-folder-id
+      in: path
+      description: ID de la carpeta
+      required: true
+      schema:
+        type: string
+    MetadataIdParameter:
+      name: metadata-id
+      in: path
+      description: ID del metadato
+      required: true
+      schema:
+        type: string
+    UserParameter:
+      name: x-user-id
+      in: header
+      description: ID user
+      required: true
+      schema:
+        type: string
+  responses:
+    BadRequest:
+      description: Error de solicitud inválida
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrorDto'
+    Forbidden:
+      description: Acceso denegado
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrorDto'
+    InternalServerError:
+      description: Error interno del servidor
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrorDto'
+    NotFound:
+      description: Elemento no encontrado
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrorDto'
+    Unauthorized:
+      description: Error de autenticación
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrorDto'
+    UnexpectedError:
+      description: Unexpected error
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrorDto'

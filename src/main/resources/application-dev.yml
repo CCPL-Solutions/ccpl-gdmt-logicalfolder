@@ -1,0 +1,7 @@
+security:
+  oauth2:
+    resourceserver:
+      enable: false
+      #uri: ${CCPL_RESOURCE_SERVER_URL}
+      uri: http://localhost:8080/realms/develop/protocol/openid-connect/
+      jwkSetUri: certs

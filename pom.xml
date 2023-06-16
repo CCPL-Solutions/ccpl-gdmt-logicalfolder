@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
+		 xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
 	<modelVersion>4.0.0</modelVersion>
 	<parent>
 		<groupId>org.springframework.boot</groupId>
@@ -12,28 +12,232 @@
 	<artifactId>ccpl-gdmt-logicalfolder</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
 	<name>ccpl-gdmt-logicalfolder</name>
-	<description>Demo project for Spring Boot</description>
+	<description>Logical Folder Microservice</description>
 	<properties>
 		<java.version>11</java.version>
+		<spring-cloud.version>2021.0.7</spring-cloud.version>
+		<!--Start Sonarqube properties-->
+		<sonar.java.source>11</sonar.java.source>
+		<sonar.java.sources>./src/main/java</sonar.java.sources>
+		<sonar.java.binaries>target/classes</sonar.java.binaries>
+		<sonar.projectKey>ccpl-gdmt-logicalfolder</sonar.projectKey>
+		<sonar.exclusions>
+			**/*Application.*,
+			**/*Api*.*,
+			**/entity/*,
+			**/entity/**/*,
+			**/constant/*,
+			**/constant/**/*,
+			**/config/*,
+			**/config/**/*,
+			**/autoconfigure/*,
+			**/autoconfigure/**/*,
+			**/model/*,
+			**/model/**/*,
+			**/dto/*,
+			**/dto/**/*
+		</sonar.exclusions>
+		<sonar.coverage.exclusions>
+			**/*Application.*,
+			**/*Api*.*,
+			**/entity/*,
+			**/entity/**/*,
+			**/constant/*,
+			**/constant/**/*,
+			**/config/*,
+			**/config/**/*,
+			**/autoconfigure/*,
+			**/autoconfigure/**/*,
+			**/model/*,
+			**/model/**/*,
+			**/dto/*,
+			**/dto/**/*
+		</sonar.coverage.exclusions>
+		<sonar.coverage.jacoco.xmlReportPaths>target/site/jacoco/jacoco.xml</sonar.coverage.jacoco.xmlReportPaths>
+		<!--End Sonarqube properties-->
 	</properties>
 	<dependencies>
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-actuator</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-data-jpa</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-validation</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-web</artifactId>
 		</dependency>
+		<dependency>
+			<groupId>org.springframework.cloud</groupId>
+			<artifactId>spring-cloud-starter-circuitbreaker-resilience4j</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>org.springframework.cloud</groupId>
+			<artifactId>spring-cloud-starter-openfeign</artifactId>
+		</dependency>
 
+		<dependency>
+			<groupId>org.postgresql</groupId>
+			<artifactId>postgresql</artifactId>
+			<scope>runtime</scope>
+		</dependency>
+		<dependency>
+			<groupId>org.projectlombok</groupId>
+			<artifactId>lombok</artifactId>
+			<optional>true</optional>
+		</dependency>
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-test</artifactId>
 			<scope>test</scope>
 		</dependency>
+		<dependency>
+			<groupId>org.springframework.security</groupId>
+			<artifactId>spring-security-test</artifactId>
+			<scope>test</scope>
+		</dependency>
+
+		<dependency>
+			<groupId>org.openapitools</groupId>
+			<artifactId>jackson-databind-nullable</artifactId>
+			<version>0.2.6</version>
+		</dependency>
+		<dependency>
+			<groupId>io.springfox</groupId>
+			<artifactId>springfox-swagger2</artifactId>
+			<version>3.0.0</version>
+		</dependency>
+
+		<dependency>
+			<groupId>com.ccplsolutions</groupId>
+			<artifactId>ccpl-starter-security-oauth2-resource-server</artifactId>
+			<version>1.0.1</version>
+		</dependency>
 	</dependencies>
+	<dependencyManagement>
+		<dependencies>
+			<dependency>
+				<groupId>org.springframework.cloud</groupId>
+				<artifactId>spring-cloud-dependencies</artifactId>
+				<version>${spring-cloud.version}</version>
+				<type>pom</type>
+				<scope>import</scope>
+			</dependency>
+		</dependencies>
+	</dependencyManagement>
 
 	<build>
 		<plugins>
 			<plugin>
 				<groupId>org.springframework.boot</groupId>
 				<artifactId>spring-boot-maven-plugin</artifactId>
+				<configuration>
+					<excludes>
+						<exclude>
+							<groupId>org.projectlombok</groupId>
+							<artifactId>lombok</artifactId>
+						</exclude>
+					</excludes>
+				</configuration>
+			</plugin>
+			<plugin>
+				<groupId>org.jacoco</groupId>
+				<artifactId>jacoco-maven-plugin</artifactId>
+				<version>0.8.6</version>
+				<configuration>
+					<excludes>
+						<exclude>**/*Application.*</exclude>
+						<exclude>**/*Api*.*</exclude>
+						<exclude>**/entity/*</exclude>
+						<exclude>**/entity/**/*</exclude>
+						<exclude>**/constant/*</exclude>
+						<exclude>**/constant/**/*</exclude>
+						<exclude>**/config/*</exclude>
+						<exclude>**/config/**/*</exclude>
+						<exclude>**/autoconfigure/*</exclude>
+						<exclude>**/autoconfigure/**/*</exclude>
+						<exclude>**/model/*</exclude>
+						<exclude>**/model/**/*</exclude>
+						<exclude>**/dto/*</exclude>
+						<exclude>**/dto/**/*</exclude>
+						<exclude>**/exception/*</exclude>
+						<exclude>**/exception/**/*</exclude>
+					</excludes>
+				</configuration>
+				<executions>
+					<execution>
+						<goals>
+							<goal>prepare-agent</goal>
+						</goals>
+					</execution>
+					<execution>
+						<id>jacoco-report</id>
+						<phase>test</phase>
+						<goals>
+							<goal>report</goal>
+						</goals>
+					</execution>
+					<execution>
+						<id>jacoco-check</id>
+						<goals>
+							<goal>check</goal>
+						</goals>
+						<configuration>
+							<rules>
+								<rule>
+									<element>PACKAGE</element>
+									<limits>
+										<limit>
+											<counter>LINE</counter>
+											<value>COVEREDRATIO</value>
+											<minimum>0.80</minimum>
+										</limit>
+									</limits>
+								</rule>
+							</rules>
+						</configuration>
+					</execution>
+				</executions>
+			</plugin>
+			<plugin>
+				<groupId>org.openapitools</groupId>
+				<artifactId>openapi-generator-maven-plugin</artifactId>
+				<version>5.1.0</version>
+				<executions>
+					<execution>
+						<goals>
+							<goal>generate</goal>
+						</goals>
+						<configuration>
+							<inputSpec>${project.basedir}/api/ccpl-gdmt-logicalfolder-api.yml</inputSpec>
+							<generatorName>spring</generatorName>
+							<library>spring-boot</library>
+							<apiPackage>com.colegiominayticha.ccplgdmtlogicalfolder.consumer</apiPackage>
+							<modelPackage>com.colegiominayticha.ccplgdmtlogicalfolder.model.consumer</modelPackage>
+							<supportingFilesToGenerate>ApiUtil.java</supportingFilesToGenerate>
+							<configOptions>
+								<interfaceOnly>true</interfaceOnly>
+								<delegatePattern>false</delegatePattern>
+								<additionalModelTypeAnnotations>
+									@lombok.Builder
+									@lombok.Getter
+									@lombok.Setter
+									@lombok.NoArgsConstructor
+									@lombok.AllArgsConstructor
+								</additionalModelTypeAnnotations>
+							</configOptions>
+							<typeMappings>
+								OffsetDateTime=java.time.LocalDateTime
+							</typeMappings>
+						</configuration>
+					</execution>
+				</executions>
 			</plugin>
 		</plugins>
 	</build>
