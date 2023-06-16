@@ -5,6 +5,7 @@ import com.colegiominayticha.ccplgdmtlogicalfolder.model.RestConsumerRequestDto;
 import com.colegiominayticha.ccplgdmtlogicalfolder.model.consumer.LogicalFolderRequestDto;
 import com.colegiominayticha.ccplgdmtlogicalfolder.model.consumer.LogicalFolderResponseDto;
 import com.colegiominayticha.ccplgdmtlogicalfolder.service.ILogicalFolderService;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -13,6 +14,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import java.util.Map;
 
+@Slf4j
 @RestController
 @RequestMapping("/api/v1")
 public class LogicalFolderController implements LogicalFoldersApi {
@@ -24,6 +26,7 @@ public class LogicalFolderController implements LogicalFoldersApi {
     @PreAuthorize("hasRole('gdmt:logicalfolders:logicalfolders:write')")
     public ResponseEntity<LogicalFolderResponseDto> createLogicalFolder(String xUserId, LogicalFolderRequestDto
             logicalFolderRequestDto) {
+        log.info("Entered /logical-folders Controller");
 
         RestConsumerRequestDto<LogicalFolderRequestDto> restConsumerRequest =
                 prepareRestConsumerRequestCreateLogicalFolder(xUserId, logicalFolderRequestDto);

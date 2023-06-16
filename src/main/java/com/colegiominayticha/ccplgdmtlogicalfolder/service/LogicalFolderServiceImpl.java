@@ -17,7 +17,7 @@ public class LogicalFolderServiceImpl implements ILogicalFolderService {
     @Override
     public LogicalFolderResponseDto createLogicalFolder(
             RestConsumerRequestDto<LogicalFolderRequestDto> restConsumerRequest) {
-        log.info("Entered /logical-folders ServiceImpl");
+        log.info("Entered /logical-folders Service");
         return LogicalFolderResponseDto
                 .builder()
                 .id(UUID.randomUUID())
