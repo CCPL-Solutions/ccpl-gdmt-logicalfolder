@@ -1,10 +1,10 @@
 logging:
   level:
-    root: DEBUG
+    root: INFO
 
 security:
   oauth2:
     resourceserver:
-      enable: false
-      uri: http://localhost:8080/realms/develop/protocol/openid-connect/
+      enable: true
+      uri: ${CCPL_RESOURCE_SERVER_URL}
       jwkSetUri: certs
