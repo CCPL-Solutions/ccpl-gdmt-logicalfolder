@@ -1,9 +1,9 @@
 package com.colegiominayticha.ccplgdmtlogicalfolder;
 
 import com.colegiominayticha.ccplgdmtlogicalfolder.crosscutting.constant.HeaderConstant;
-import com.colegiominayticha.ccplgdmtlogicalfolder.model.consumer.LogicalFolderInformation;
-import com.colegiominayticha.ccplgdmtlogicalfolder.model.consumer.LogicalFolderRequestDto;
-import com.colegiominayticha.ccplgdmtlogicalfolder.model.consumer.LogicalFolderResponseDto;
+import com.colegiominayticha.ccplgdmtlogicalfolder.model.LogicalFolderInformation;
+import com.colegiominayticha.ccplgdmtlogicalfolder.model.LogicalFolderRequestDto;
+import com.colegiominayticha.ccplgdmtlogicalfolder.model.LogicalFolderResponseDto;
 
 import java.time.LocalDateTime;
 import java.util.HashMap;
@@ -21,6 +21,7 @@ public class DummyMock {
     public static LogicalFolderRequestDto getLogicalFolderRequestDto() {
         return LogicalFolderRequestDto
                 .builder()
+                .name("Name")
                 .build();
     }
 

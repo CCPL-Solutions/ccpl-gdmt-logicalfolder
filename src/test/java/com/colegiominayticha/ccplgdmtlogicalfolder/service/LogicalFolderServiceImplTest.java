@@ -1,8 +1,8 @@
 package com.colegiominayticha.ccplgdmtlogicalfolder.service;
 
-import com.colegiominayticha.ccplgdmtlogicalfolder.model.RestConsumerRequestDto;
-import com.colegiominayticha.ccplgdmtlogicalfolder.model.consumer.LogicalFolderRequestDto;
-import com.colegiominayticha.ccplgdmtlogicalfolder.model.consumer.LogicalFolderResponseDto;
+import com.ccplsolutions.common.model.RestRequestDto;
+import com.colegiominayticha.ccplgdmtlogicalfolder.model.LogicalFolderRequestDto;
+import com.colegiominayticha.ccplgdmtlogicalfolder.model.LogicalFolderResponseDto;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -18,14 +18,14 @@ import static org.junit.jupiter.api.Assertions.assertNotNull;
 class LogicalFolderServiceImplTest {
 
     @Mock
-    RestConsumerRequestDto<LogicalFolderRequestDto> restConsumerRequest;
+    RestRequestDto<LogicalFolderRequestDto> restConsumerRequest;
 
     @InjectMocks
     private LogicalFolderServiceImpl service;
 
     @BeforeEach
     void setUp() {
-        restConsumerRequest = RestConsumerRequestDto
+        restConsumerRequest = RestRequestDto
                 .<LogicalFolderRequestDto>builder()
                 .headers(getRequestHeaders())
                 .body(getLogicalFolderRequestDto())

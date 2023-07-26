@@ -491,12 +491,14 @@ components:
           maxItems: 3
           items:
             $ref: '#/components/schemas/SpecificMetadataDto'
+      required:
+        - name
     SpecificMetadataDto:
       type: object
       properties:
         id:
-          type: integer
-          format: int64
+          type: string
+          format: uuid
           description: Identificador del metadato
           readOnly: true
         name:
