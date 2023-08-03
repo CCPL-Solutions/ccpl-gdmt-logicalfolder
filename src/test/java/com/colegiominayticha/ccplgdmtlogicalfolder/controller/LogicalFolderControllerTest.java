@@ -1,6 +1,6 @@
-package com.colegiominayticha.ccplgdmtlogicalfolder.consumer;
+package com.colegiominayticha.ccplgdmtlogicalfolder.controller;
 
-import com.colegiominayticha.ccplgdmtlogicalfolder.model.consumer.LogicalFolderRequestDto;
+import com.colegiominayticha.ccplgdmtlogicalfolder.model.LogicalFolderRequestDto;
 import com.colegiominayticha.ccplgdmtlogicalfolder.service.ILogicalFolderService;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.BeforeEach;

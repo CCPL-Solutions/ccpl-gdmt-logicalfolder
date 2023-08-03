@@ -55,6 +55,7 @@
 		</sonar.coverage.exclusions>
 		<sonar.coverage.jacoco.xmlReportPaths>target/site/jacoco/jacoco.xml</sonar.coverage.jacoco.xmlReportPaths>
 		<!--End Sonarqube properties-->
+		<openapi-generator.version>6.4.0</openapi-generator.version>
 	</properties>
 	<dependencies>
 		<dependency>
@@ -103,15 +104,16 @@
 			<scope>test</scope>
 		</dependency>
 
+
 		<dependency>
 			<groupId>org.openapitools</groupId>
 			<artifactId>jackson-databind-nullable</artifactId>
 			<version>0.2.6</version>
 		</dependency>
 		<dependency>
-			<groupId>io.springfox</groupId>
-			<artifactId>springfox-swagger2</artifactId>
-			<version>3.0.0</version>
+			<groupId>org.springdoc</groupId>
+			<artifactId>springdoc-openapi-ui</artifactId>
+			<version>1.7.0</version>
 		</dependency>
 
 		<dependency>
@@ -119,7 +121,18 @@
 			<artifactId>ccpl-starter-security-oauth2-resource-server</artifactId>
 			<version>1.0.1</version>
 		</dependency>
+		<dependency>
+			<groupId>com.ccplsolutions</groupId>
+			<artifactId>ccpl-commons</artifactId>
+			<version>1.0.2</version>
+		</dependency>
+		<dependency>
+			<groupId>com.ccplsolutions</groupId>
+			<artifactId>ccpl-security</artifactId>
+			<version>1.0.2</version>
+		</dependency>
 	</dependencies>
+
 	<dependencyManagement>
 		<dependencies>
 			<dependency>
@@ -208,7 +221,7 @@
 			<plugin>
 				<groupId>org.openapitools</groupId>
 				<artifactId>openapi-generator-maven-plugin</artifactId>
-				<version>5.1.0</version>
+				<version>${openapi-generator.version}</version>
 				<executions>
 					<execution>
 						<goals>
@@ -218,8 +231,8 @@
 							<inputSpec>${project.basedir}/api/ccpl-gdmt-logicalfolder-api.yml</inputSpec>
 							<generatorName>spring</generatorName>
 							<library>spring-boot</library>
-							<apiPackage>com.colegiominayticha.ccplgdmtlogicalfolder.consumer</apiPackage>
-							<modelPackage>com.colegiominayticha.ccplgdmtlogicalfolder.model.consumer</modelPackage>
+							<apiPackage>com.colegiominayticha.ccplgdmtlogicalfolder.api</apiPackage>
+							<modelPackage>com.colegiominayticha.ccplgdmtlogicalfolder.model</modelPackage>
 							<supportingFilesToGenerate>ApiUtil.java</supportingFilesToGenerate>
 							<configOptions>
 								<interfaceOnly>true</interfaceOnly>

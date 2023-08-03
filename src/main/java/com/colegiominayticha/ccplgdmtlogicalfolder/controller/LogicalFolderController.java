@@ -1,9 +1,10 @@
-package com.colegiominayticha.ccplgdmtlogicalfolder.consumer;
+package com.colegiominayticha.ccplgdmtlogicalfolder.controller;
 
+import com.ccplsolutions.common.model.RestRequestDto;
+import com.colegiominayticha.ccplgdmtlogicalfolder.api.LogicalFoldersApi;
 import com.colegiominayticha.ccplgdmtlogicalfolder.crosscutting.util.Util;
-import com.colegiominayticha.ccplgdmtlogicalfolder.model.RestConsumerRequestDto;
-import com.colegiominayticha.ccplgdmtlogicalfolder.model.consumer.LogicalFolderRequestDto;
-import com.colegiominayticha.ccplgdmtlogicalfolder.model.consumer.LogicalFolderResponseDto;
+import com.colegiominayticha.ccplgdmtlogicalfolder.model.LogicalFolderRequestDto;
+import com.colegiominayticha.ccplgdmtlogicalfolder.model.LogicalFolderResponseDto;
 import com.colegiominayticha.ccplgdmtlogicalfolder.service.ILogicalFolderService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -23,23 +24,23 @@ public class LogicalFolderController implements LogicalFoldersApi {
     private ILogicalFolderService service;
 
     @Override
-    @PreAuthorize("hasRole('gdmt:logicalfolders:logicalfolders:write')")
+    @PreAuthorize("hasRole('logicalfolders:logicalfolders:write')")
     public ResponseEntity<LogicalFolderResponseDto> createLogicalFolder(String xUserId, LogicalFolderRequestDto
             logicalFolderRequestDto) {
         log.info("Entered /logical-folders Controller");
 
-        RestConsumerRequestDto<LogicalFolderRequestDto> restConsumerRequest =
-                prepareRestConsumerRequestCreateLogicalFolder(xUserId, logicalFolderRequestDto);
+        RestRequestDto<LogicalFolderRequestDto> restConsumerRequest =
+                prepareRequestCreateLogicalFolder(xUserId, logicalFolderRequestDto);
 
         return ResponseEntity.ok(service.createLogicalFolder(restConsumerRequest));
     }
 
-    private RestConsumerRequestDto<LogicalFolderRequestDto> prepareRestConsumerRequestCreateLogicalFolder(
+    private RestRequestDto<LogicalFolderRequestDto> prepareRequestCreateLogicalFolder(
             String xUserId, LogicalFolderRequestDto logicalFolderRequestDto) {
 
         Map<String, Object> headers = Util.getHeaders(xUserId);
 
-        return RestConsumerRequestDto
+        return RestRequestDto
                 .<LogicalFolderRequestDto>builder()
                 .body(logicalFolderRequestDto)
                 .headers(headers)

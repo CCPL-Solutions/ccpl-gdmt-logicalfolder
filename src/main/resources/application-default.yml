@@ -1,10 +1,31 @@
-logging:
-  level:
-    root: INFO
+spring:
+  datasource:
+    url: jdbc:postgresql://localhost:5432/ccplGdmtDB
+    username: ccplGdmt
+    password: ccplGdmt2023
+  jpa:
+    hibernate:
+      naming:
+        physical-strategy: org.hibernate.boot.model.naming.PhysicalNamingStrategyStandardImpl
+      show-sql: true
+    properties:
+      hibernate:
+        dialect: org.hibernate.dialect.PostgreSQLDialect
 
 security:
   oauth2:
     resourceserver:
       enable: false
-      uri: http://localhost:8080/realms/develop/protocol/openid-connect/
-      jwkSetUri: certs
+      uri: http://localhost:8080/realms/develop/protocol/openid-connect
+      jwkSetUri: /certs
+
+client-credential:
+  client-assertion:
+    client-id: ff2f251c-28e5-11ee-be56-0242ac120002
+    identity-server-url: http://localhost:8080/realms/develop/protocol/openid-connect/token
+    token-expiration-time-ms: 900000
+  key:
+    key-store-base64: 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
+    key-store-password-base64: Y2NwbC1nZG10
+    key-store-format: JKS
+    key-alias: ccpl-gdmt

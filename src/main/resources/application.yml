@@ -4,3 +4,14 @@ spring:
 
 server:
   port: 8080
+
+logging:
+  level:
+    root: INFO
+
+access-token:
+  scope: logicalfolders:logicalfolders:write
+  refresh-cache: 0 0/15 * * * ?
+
+secure-filter:
+  exempt-paths: /health,/info,/metrics,/error,/h2-console,/h2-console/**,/swagger-ui.html/**,/configuration/**,/swagger-resources/**,/v2/api-docs,/v3/api-docs/**,/swagger-ui/**,/readyz,/readyz/**,/livez,/livez/**,/liveness,/readiness

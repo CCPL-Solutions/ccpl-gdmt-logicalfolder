@@ -1,11 +1,11 @@
 package com.colegiominayticha.ccplgdmtlogicalfolder.service;
 
-import com.colegiominayticha.ccplgdmtlogicalfolder.model.RestConsumerRequestDto;
-import com.colegiominayticha.ccplgdmtlogicalfolder.model.consumer.LogicalFolderRequestDto;
-import com.colegiominayticha.ccplgdmtlogicalfolder.model.consumer.LogicalFolderResponseDto;
+import com.ccplsolutions.common.model.RestRequestDto;
+import com.colegiominayticha.ccplgdmtlogicalfolder.model.LogicalFolderRequestDto;
+import com.colegiominayticha.ccplgdmtlogicalfolder.model.LogicalFolderResponseDto;
 
 public interface ILogicalFolderService {
 
-    LogicalFolderResponseDto createLogicalFolder(RestConsumerRequestDto<LogicalFolderRequestDto> restConsumerRequest);
+    LogicalFolderResponseDto createLogicalFolder(RestRequestDto<LogicalFolderRequestDto> restConsumerRequest);
 
 }
