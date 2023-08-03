@@ -1,8 +1,8 @@
 spring:
   datasource:
     url: ${GDMT_DATABASE_URL}
-    username: ${GDMT_DATABASE_USERNAME}
-    password: ${GDMT_DATABASE_PASSWORD}
+    username: encodedSecret:${GDMT_SECRET_DATABASE_USERNAME}
+    password: encodedSecret:${GDMT_SECRET_DATABASE_PASSWORD}
   jpa:
     hibernate:
       naming:
@@ -21,8 +21,8 @@ security:
 
 client-credential:
   client-assertion:
-    client-id: ff2f251c-28e5-11ee-be56-0242ac120002
-    authentication-server-url: ${GDMT_IDENTITY_SERVER_URL}/token
+    client-id: encodedSecret:${GDMT_SECRET_CLIENT_ASSERTION_CLIENT_ID}
+    identity-server-url: ${GDMT_IDENTITY_SERVER_URL}/token
     token-expiration-time-ms: 900000
   key:
     key-store-base64: ${GDMT_SECRET_CLIENT_ASSERTION_KEYSTORE_BASE64}
