@@ -6,6 +6,7 @@ import com.colegiominayticha.ccplgdmtlogicalfolder.model.LogicalFolderRequestDto
 import com.colegiominayticha.ccplgdmtlogicalfolder.model.LogicalFolderResponseDto;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.UUID;
@@ -19,10 +20,13 @@ public class DummyMock {
     }
 
     public static LogicalFolderRequestDto getLogicalFolderRequestDto() {
-        return LogicalFolderRequestDto
-                .builder()
-                .name("Name")
-                .build();
+        LogicalFolderRequestDto logicalFolderRequest = new LogicalFolderRequestDto();
+        logicalFolderRequest.setName("name");
+        logicalFolderRequest.setDescription("description");
+        logicalFolderRequest.setParentId(UUID.randomUUID());
+        logicalFolderRequest.setSpecificMetadata(new ArrayList<>());
+        return logicalFolderRequest;
+
     }
 
     public static LogicalFolderResponseDto getLogicalFolderResponseDto() {

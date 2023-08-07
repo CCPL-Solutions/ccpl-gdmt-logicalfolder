@@ -1,6 +1,7 @@
 package com.colegiominayticha.ccplgdmtlogicalfolder.service;
 
 import com.ccplsolutions.common.model.RestRequestDto;
+import com.colegiominayticha.ccplgdmtlogicalfolder.dataprovider.jpa.repository.ILogicalFolderRepository;
 import com.colegiominayticha.ccplgdmtlogicalfolder.model.LogicalFolderRequestDto;
 import com.colegiominayticha.ccplgdmtlogicalfolder.model.LogicalFolderResponseDto;
 import org.junit.jupiter.api.BeforeEach;
@@ -18,7 +19,10 @@ import static org.junit.jupiter.api.Assertions.assertNotNull;
 class LogicalFolderServiceImplTest {
 
     @Mock
-    RestRequestDto<LogicalFolderRequestDto> restConsumerRequest;
+    private RestRequestDto<LogicalFolderRequestDto> restConsumerRequest;
+
+    @Mock
+    private ILogicalFolderRepository logicalFolderRepository;
 
     @InjectMocks
     private LogicalFolderServiceImpl service;
