@@ -8,7 +8,8 @@ import lombok.Getter;
 @AllArgsConstructor
 public enum MessageErrorEnum {
 
-    CCPL_GDMT_NO_CONTENT("CCPL_GDMT_G000", "Logical folder with id '%s' does not exist.");
+    CCPL_GDMT_G000("CCPL_GDMT_G001", "Logical folder with id '%s' does not exist."),
+    CCPL_GDMT_G001("CCPL_GDMT_G000", "Logical folder with name '%s' already exist.");
 
     private final String code;
     private final String description;

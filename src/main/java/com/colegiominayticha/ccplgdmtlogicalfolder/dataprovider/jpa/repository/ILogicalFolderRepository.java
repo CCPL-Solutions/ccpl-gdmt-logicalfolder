@@ -4,8 +4,12 @@ import com.colegiominayticha.ccplgdmtlogicalfolder.dataprovider.jpa.entity.Logic
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
+import java.util.Optional;
 import java.util.UUID;
 
 @Repository
 public interface ILogicalFolderRepository extends JpaRepository<LogicalFolderEntity, UUID> {
+
+    Optional<LogicalFolderEntity> findByName(String name);
+
 }
