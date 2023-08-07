@@ -72,6 +72,7 @@ public class LogicalFolderServiceImpl implements ILogicalFolderService {
 
         logicalFolderResponseDto.setFolderInformation(logicalFolderInformation);
 
+
         return logicalFolderResponseDto;
     }
 
