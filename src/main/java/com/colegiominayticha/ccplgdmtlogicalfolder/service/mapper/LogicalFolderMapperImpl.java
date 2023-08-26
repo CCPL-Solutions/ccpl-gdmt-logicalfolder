@@ -24,7 +24,7 @@ public class LogicalFolderMapperImpl implements ILogicalFolderMapper {
         logicalFolderEntity.setCreatedUser((String) requestHeaders.get(HeaderConstant.X_USER_ID));
         logicalFolderEntity.setCreatedAt(LocalDateTime.now());
         logicalFolderEntity.setParent(logicalFolderEntityParent);
-        requestBody.getSpecificMetadata().forEach(this::mapInSpecificMetadata);
+        requestBody.getSpecificMetadata().forEach(specificMetadata -> this.mapInSpecificMetadata(specificMetadata, logicalFolderEntity));
         return logicalFolderEntity;
     }
 
@@ -41,10 +41,11 @@ public class LogicalFolderMapperImpl implements ILogicalFolderMapper {
         return logicalFolderResponseDto;
     }
 
-    private void mapInSpecificMetadata(SpecificMetadataDto specificMetadataDto) {
+    private void mapInSpecificMetadata(SpecificMetadataDto specificMetadataDto, LogicalFolderEntity logicalFolderEntity) {
         SpecificMetadataEntity specificMetadataEntity = new SpecificMetadataEntity();
         specificMetadataEntity.setName(specificMetadataDto.getName());
         specificMetadataEntity.setValue(specificMetadataDto.getValue());
+        logicalFolderEntity.addSpecificMetadata(specificMetadataEntity);
     }
 
     private SpecificMetadataDto mapOutSpecificMetadata(SpecificMetadataEntity specificMetadata) {
@@ -61,6 +62,8 @@ public class LogicalFolderMapperImpl implements ILogicalFolderMapper {
         logicalFolderInformation.setDescription(logicalFolderEntity.getDescription());
         logicalFolderInformation.setCreatedUser(logicalFolderEntity.getCreatedUser());
         logicalFolderInformation.setCreatedAt(logicalFolderEntity.getCreatedAt());
+        logicalFolderInformation.setUpdatedAt(logicalFolderEntity.getUpdatedAt());
+        logicalFolderInformation.setUpdatedUser(logicalFolderEntity.getUpdatedUser());
         return logicalFolderInformation;
     }
 

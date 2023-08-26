@@ -465,6 +465,9 @@ components:
           type: string
           format: date-time
           description: Fecha y hora de creación de la carpeta
+        updated_user:
+          type: string
+          description: Usuario que realizo la actualización de los datos de una carpeta
         updated_at:
           type: string
           format: date-time
