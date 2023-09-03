@@ -1,22 +1,27 @@
-package com.colegiominayticha.ccplgdmtlogicalfolder.service;
+package com.colegiominayticha.ccplgdmtlogicalfolder.service.impl;
 
+import com.ccplsolutions.common.exception.classification.BusinessException;
 import com.ccplsolutions.common.exception.classification.business.InvalidDataException;
 import com.ccplsolutions.common.model.RestRequestDto;
-import com.ccplsolutions.security.service.AuthenticationService;
 import com.colegiominayticha.ccplgdmtlogicalfolder.crosscutting.constant.HeaderConstant;
 import com.colegiominayticha.ccplgdmtlogicalfolder.crosscutting.constant.MessageErrorEnum;
 import com.colegiominayticha.ccplgdmtlogicalfolder.crosscutting.constant.PathParamConstant;
+import com.colegiominayticha.ccplgdmtlogicalfolder.dataprovider.jpa.entity.ChildrenEntity;
 import com.colegiominayticha.ccplgdmtlogicalfolder.dataprovider.jpa.entity.LogicalFolderEntity;
+import com.colegiominayticha.ccplgdmtlogicalfolder.dataprovider.jpa.repository.IChildrenRepository;
 import com.colegiominayticha.ccplgdmtlogicalfolder.dataprovider.jpa.repository.ILogicalFolderRepository;
+import com.colegiominayticha.ccplgdmtlogicalfolder.dataprovider.jpa.repository.ISpecificMetadataRepository;
 import com.colegiominayticha.ccplgdmtlogicalfolder.model.FolderUpdateRequestDto;
 import com.colegiominayticha.ccplgdmtlogicalfolder.model.LogicalFolderRequestDto;
 import com.colegiominayticha.ccplgdmtlogicalfolder.model.LogicalFolderResponseDto;
+import com.colegiominayticha.ccplgdmtlogicalfolder.service.ILogicalFolderService;
 import com.colegiominayticha.ccplgdmtlogicalfolder.service.mapper.ILogicalFolderMapper;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
+import java.util.Objects;
 import java.util.Optional;
 import java.util.UUID;
 
@@ -25,13 +30,16 @@ import java.util.UUID;
 public class LogicalFolderServiceImpl implements ILogicalFolderService {
 
     @Autowired
-    private AuthenticationService authenticationService;
+    private IChildrenRepository childrenRepository;
 
     @Autowired
     private ILogicalFolderMapper mapper;
 
     @Autowired
     private ILogicalFolderRepository logicalFolderRepository;
+
+    @Autowired
+    private ISpecificMetadataRepository specificMetadataRepository;
 
     @Override
     public LogicalFolderResponseDto createLogicalFolder(
@@ -45,14 +53,17 @@ public class LogicalFolderServiceImpl implements ILogicalFolderService {
 
         validateExistingFolder(requestBody.getName());
 
-        var logicalFolderEntityParent = this.findLogicalFolderEntityById(requestBody.getParentId());
+        LogicalFolderEntity logicalFolderEntityParent = null;
+        if (Objects.nonNull(requestBody.getParentId())) {
+            logicalFolderEntityParent = this.findLogicalFolderEntityById(requestBody.getParentId());
+        }
         var logicalFolderEntity = mapper.mapInCreateLogicalFolder(requestBody, requestHeaders, logicalFolderEntityParent);
         var logicalFolderEntitySaved = this.saveLogicalFolder(logicalFolderEntity);
 
         var logicalFolderResponse = mapper.mapOutCreateLogicalFolder(logicalFolderEntitySaved);
+        this.addChildrenToLogicalFolderParent(logicalFolderEntityParent, logicalFolderEntitySaved.getId(), "LOGICAL_FOLDER");
 
         log.debug("Response createLogicalFolder: {}", logicalFolderResponse);
-
         return logicalFolderResponse;
     }
 
@@ -94,6 +105,28 @@ public class LogicalFolderServiceImpl implements ILogicalFolderService {
         this.saveLogicalFolder(logicalFolderEntity);
     }
 
+    @Override
+    public void deleteLogicalFolder(RestRequestDto<Void> restConsumerRequest) {
+
+        log.info("Entered DELETE /logical-folders/{logical-folder-id}");
+        log.debug("Request updateLogicalFolder: {}", restConsumerRequest);
+
+        var logicalFolderId = UUID.fromString((String) restConsumerRequest.getPathParams()
+                .get(PathParamConstant.LOGICAL_FOLDER_ID));
+        var logicalFolderEntity = this.findLogicalFolderEntityById(logicalFolderId);
+
+        if (!logicalFolderEntity.getChildren().isEmpty()) {
+            throw new BusinessException(
+                    MessageErrorEnum.GDMT002.getDescription(),
+                    MessageErrorEnum.GDMT002.getCode());
+        }
+
+        specificMetadataRepository.deleteAllByLogicalFolder(logicalFolderEntity);
+        logicalFolderRepository.deleteById(logicalFolderId);
+        childrenRepository.deleteById(logicalFolderId);
+
+    }
+
     private void validateExistingFolder(String logicalFolderName) {
         Optional<LogicalFolderEntity> logicalFolder = logicalFolderRepository.findByName(logicalFolderName);
         if (logicalFolder.isPresent()) {
@@ -106,12 +139,24 @@ public class LogicalFolderServiceImpl implements ILogicalFolderService {
     private LogicalFolderEntity findLogicalFolderEntityById(UUID logicalFolderId) {
         return logicalFolderRepository.findById(logicalFolderId)
                 .orElseThrow(() -> new InvalidDataException(
-                        MessageErrorEnum.GDMT001.getDescription(),
+                        String.format(MessageErrorEnum.GDMT001.getDescription(), logicalFolderId),
                         MessageErrorEnum.GDMT001.getCode()));
     }
 
     private LogicalFolderEntity saveLogicalFolder(LogicalFolderEntity logicalFolderEntity) {
         return logicalFolderRepository.save(logicalFolderEntity);
+    }
+
+    private void addChildrenToLogicalFolderParent(LogicalFolderEntity logicalFolderEntityParent, UUID childId, String nodeType) {
+        if (Objects.nonNull(logicalFolderEntityParent)) {
+            ChildrenEntity childrenEntity = new ChildrenEntity();
+            childrenEntity.setId(childId);
+            childrenEntity.setNodeType(nodeType);
+            childrenEntity.setLogicalFolder(logicalFolderEntityParent);
+
+            logicalFolderEntityParent.addChildren(childrenEntity);
+            this.saveLogicalFolder(logicalFolderEntityParent);
+        }
     }
 
 }

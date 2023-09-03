@@ -1,3 +1,6 @@
+server:
+  port: 8079
+
 spring:
   datasource:
     url: jdbc:postgresql://localhost:5432/ccplGdmtDB
@@ -15,7 +18,7 @@ spring:
 security:
   oauth2:
     resourceserver:
-      enable: false
+      enable: true
       uri: http://localhost:8080/realms/develop/protocol/openid-connect
       jwkSetUri: /certs
 

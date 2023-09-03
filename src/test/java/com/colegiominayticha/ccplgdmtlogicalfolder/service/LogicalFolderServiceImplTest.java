@@ -4,6 +4,7 @@ import com.ccplsolutions.common.model.RestRequestDto;
 import com.colegiominayticha.ccplgdmtlogicalfolder.dataprovider.jpa.repository.ILogicalFolderRepository;
 import com.colegiominayticha.ccplgdmtlogicalfolder.model.LogicalFolderRequestDto;
 import com.colegiominayticha.ccplgdmtlogicalfolder.model.LogicalFolderResponseDto;
+import com.colegiominayticha.ccplgdmtlogicalfolder.service.impl.LogicalFolderServiceImpl;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;

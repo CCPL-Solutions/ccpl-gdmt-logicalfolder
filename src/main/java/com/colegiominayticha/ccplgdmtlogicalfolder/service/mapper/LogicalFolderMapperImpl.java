@@ -11,13 +11,17 @@ import org.springframework.stereotype.Component;
 
 import java.time.LocalDateTime;
 import java.util.Map;
+import java.util.Objects;
 import java.util.stream.Collectors;
 
 @Component
 public class LogicalFolderMapperImpl implements ILogicalFolderMapper {
 
     @Override
-    public LogicalFolderEntity mapInCreateLogicalFolder(LogicalFolderRequestDto requestBody, Map<String, Object> requestHeaders, LogicalFolderEntity logicalFolderEntityParent) {
+    public LogicalFolderEntity mapInCreateLogicalFolder(LogicalFolderRequestDto requestBody,
+                                                        Map<String, Object> requestHeaders,
+                                                        LogicalFolderEntity logicalFolderEntityParent) {
+
         LogicalFolderEntity logicalFolderEntity = new LogicalFolderEntity();
         logicalFolderEntity.setName(requestBody.getName());
         logicalFolderEntity.setDescription(requestBody.getDescription());
@@ -32,7 +36,7 @@ public class LogicalFolderMapperImpl implements ILogicalFolderMapper {
     public LogicalFolderResponseDto mapOutCreateLogicalFolder(LogicalFolderEntity logicalFolderEntitySaved) {
         LogicalFolderResponseDto logicalFolderResponseDto = new LogicalFolderResponseDto();
         logicalFolderResponseDto.setId(logicalFolderEntitySaved.getId());
-        logicalFolderResponseDto.setParentId(logicalFolderEntitySaved.getParent().getId());
+        logicalFolderResponseDto.setParentId(Objects.nonNull(logicalFolderEntitySaved.getParent()) ? logicalFolderEntitySaved.getParent().getId() : null);
         logicalFolderResponseDto.setSpecificMetadata(logicalFolderEntitySaved.getSpecificMetadata()
                 .stream()
                 .map(this::mapOutSpecificMetadata)

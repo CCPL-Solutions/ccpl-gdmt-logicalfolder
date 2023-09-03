@@ -9,7 +9,8 @@ import lombok.Getter;
 public enum MessageErrorEnum {
 
     GDMT000("GDMT000", "Logical folder with name '%s' already exist."),
-    GDMT001("GDMT001", "Logical folder with id '%s' does not exist.");
+    GDMT001("GDMT001", "Logical folder with id '%s' does not exist."),
+    GDMT002("GDMT002", "The logical folder cannot be deleted because it has child components.");
 
     private final String code;
     private final String description;

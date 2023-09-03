@@ -12,4 +12,6 @@ public interface ILogicalFolderService {
     LogicalFolderResponseDto findLogicalFolderById(RestRequestDto<Void> restConsumerRequest);
 
     void updateLogicalFolder(RestRequestDto<FolderUpdateRequestDto> restConsumerRequest);
+
+    void deleteLogicalFolder(RestRequestDto<Void> restConsumerRequest);
 }
