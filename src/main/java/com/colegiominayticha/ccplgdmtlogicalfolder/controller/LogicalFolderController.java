@@ -9,8 +9,10 @@ import com.colegiominayticha.ccplgdmtlogicalfolder.model.FolderUpdateRequestDto;
 import com.colegiominayticha.ccplgdmtlogicalfolder.model.LogicalFolderListResponseDto;
 import com.colegiominayticha.ccplgdmtlogicalfolder.model.LogicalFolderRequestDto;
 import com.colegiominayticha.ccplgdmtlogicalfolder.model.LogicalFolderResponseDto;
+import com.colegiominayticha.ccplgdmtlogicalfolder.model.SpecificMetadataDto;
+import com.colegiominayticha.ccplgdmtlogicalfolder.service.ILogicalFolderMetadataService;
 import com.colegiominayticha.ccplgdmtlogicalfolder.service.ILogicalFolderService;
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -21,11 +23,12 @@ import java.util.List;
 import java.util.Map;
 
 @RestController
+@RequiredArgsConstructor
 @RequestMapping("/api/v1")
 public class LogicalFolderController implements LogicalFoldersApi {
 
-    @Autowired
-    private ILogicalFolderService service;
+    private final ILogicalFolderService logicalFolderService;
+    private final ILogicalFolderMetadataService folderMetadataService;
 
     @Override
     @PreAuthorize("hasRole('logicalfolders:logicalfolders:write')")
@@ -35,7 +38,7 @@ public class LogicalFolderController implements LogicalFoldersApi {
         RestRequestDto<LogicalFolderRequestDto> restConsumerRequest =
                 prepareRequestCreateLogicalFolder(xUserId, logicalFolderRequestDto);
 
-        return ResponseEntity.ok(service.createLogicalFolder(restConsumerRequest));
+        return ResponseEntity.ok(logicalFolderService.createLogicalFolder(restConsumerRequest));
     }
 
     @Override
@@ -53,7 +56,7 @@ public class LogicalFolderController implements LogicalFoldersApi {
         RestRequestDto<Void> restConsumerRequest =
                 prepareRequestFindLogicalFolderById(xUserId, logicalFolderId);
 
-        return ResponseEntity.ok(service.findLogicalFolderById(restConsumerRequest));
+        return ResponseEntity.ok(logicalFolderService.findLogicalFolderById(restConsumerRequest));
     }
 
     @Override
@@ -64,7 +67,7 @@ public class LogicalFolderController implements LogicalFoldersApi {
         RestRequestDto<FolderUpdateRequestDto> restConsumerRequest =
                 prepareRequestUpdateLogicalFolder(xUserId, logicalFolderId, folderUpdateRequestDto);
 
-        service.updateLogicalFolder(restConsumerRequest);
+        logicalFolderService.updateLogicalFolder(restConsumerRequest);
 
         return ResponseEntity.ok().build();
     }
@@ -74,9 +77,9 @@ public class LogicalFolderController implements LogicalFoldersApi {
     public ResponseEntity<Void> deleteLogicalFolder(String xUserId, String logicalFolderId) {
 
         RestRequestDto<Void> restConsumerRequest =
-                prepareRequestDeleteLogicalFolderById(xUserId, logicalFolderId);
+                prepareRequestFindLogicalFolderById(xUserId, logicalFolderId);
 
-        service.deleteLogicalFolder(restConsumerRequest);
+        logicalFolderService.deleteLogicalFolder(restConsumerRequest);
 
         return ResponseEntity.ok().build();
     }
@@ -87,6 +90,21 @@ public class LogicalFolderController implements LogicalFoldersApi {
                                                   FolderMoveRequestDto folderMoveRequestDto) {
         // TODO: Pending Implementation
         return LogicalFoldersApi.super.moveLogicalFolder(xUserId, logicalFolderId, folderMoveRequestDto);
+    }
+
+    @Override
+    @PreAuthorize("hasRole('logicalfolders:specificmetadata:write')")
+    public ResponseEntity<Void> addingSpecificMetadataToFolder(String xUserId, String logicalFolderId,
+                                                               SpecificMetadataDto specificMetadataDto) {
+        // TODO: Pending Implementation
+        return LogicalFoldersApi.super.addingSpecificMetadataToFolder(xUserId, logicalFolderId, specificMetadataDto);
+    }
+
+    @Override
+    @PreAuthorize("hasRole('logicalfolders:specificmetadata:delete')")
+    public ResponseEntity<Void> deleteSpecificMetadata(String xUserId, String logicalFolderId, String metadataId) {
+        // TODO: Pending Implementation
+        return LogicalFoldersApi.super.deleteSpecificMetadata(xUserId, logicalFolderId, metadataId);
     }
 
     private RestRequestDto<LogicalFolderRequestDto> prepareRequestCreateLogicalFolder(
@@ -130,17 +148,4 @@ public class LogicalFolderController implements LogicalFoldersApi {
                 .build();
     }
 
-    private RestRequestDto<Void> prepareRequestDeleteLogicalFolderById(
-            String xUserId, String logicalFolderId) {
-
-        Map<String, Object> headers = Util.getHeaders(xUserId);
-        Map<String, Object> pathParams = new HashMap<>();
-        pathParams.put(PathParamConstant.LOGICAL_FOLDER_ID, logicalFolderId);
-
-        return RestRequestDto
-                .<Void>builder()
-                .headers(headers)
-                .pathParams(pathParams)
-                .build();
-    }
 }

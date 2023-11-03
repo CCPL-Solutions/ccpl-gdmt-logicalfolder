@@ -16,8 +16,8 @@ import com.colegiominayticha.ccplgdmtlogicalfolder.model.LogicalFolderRequestDto
 import com.colegiominayticha.ccplgdmtlogicalfolder.model.LogicalFolderResponseDto;
 import com.colegiominayticha.ccplgdmtlogicalfolder.service.ILogicalFolderService;
 import com.colegiominayticha.ccplgdmtlogicalfolder.service.mapper.ILogicalFolderMapper;
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
@@ -27,19 +27,13 @@ import java.util.UUID;
 
 @Slf4j
 @Service
+@RequiredArgsConstructor
 public class LogicalFolderServiceImpl implements ILogicalFolderService {
 
-    @Autowired
-    private IChildrenRepository childrenRepository;
-
-    @Autowired
-    private ILogicalFolderMapper mapper;
-
-    @Autowired
-    private ILogicalFolderRepository logicalFolderRepository;
-
-    @Autowired
-    private ISpecificMetadataRepository specificMetadataRepository;
+    private final IChildrenRepository childrenRepository;
+    private final ILogicalFolderMapper mapper;
+    private final ILogicalFolderRepository logicalFolderRepository;
+    private final ISpecificMetadataRepository specificMetadataRepository;
 
     @Override
     public LogicalFolderResponseDto createLogicalFolder(

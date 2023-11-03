@@ -218,7 +218,7 @@ paths:
       description: >-
         Esta operación permite eliminar un metadato especifico asociado a una
         carpeta logica.
-      operationId: deletSpecificMetadata
+      operationId: deleteSpecificMetadata
       parameters:
         - $ref: '#/components/parameters/UserParameter'
         - $ref: '#/components/parameters/FolderIdParameter'
